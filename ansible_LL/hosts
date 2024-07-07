@@ -1,0 +1,12 @@
+[control]
+master
+
+[nodes] 
+node1
+node2
+node8
+
+[dbs]
+pg1
+
+

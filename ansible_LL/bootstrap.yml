@@ -1,0 +1,36 @@
+- hosts: all
+  become: true
+  pre_tasks:
+    - name: install updates (CentOS)
+      tags: always
+      dnf:
+        update_cache: yes
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+    - name: install updates (Ubuntu)
+      apt:
+        update_cache: yes
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
+- hosts: all
+  become: true
+  tasks:
+    - name: create user simone
+      tags: always
+      ansible.builtin.user:
+        name: simone
+        shell: /bin/bash
+        group: root
+    - name: add ssh key for simone
+      tags: alwase
+      ansible.builtin.authorized_key:
+        user: simone
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHfliDQxruZNwE2YkBiNoDh5QpeSRgtQkR6Cme5FE2p ansible"
+    - name: add sudoers file for simone
+      tags: alwase
+      ansible.builtin.copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/simone
+        owner: root
+        group: root
+        mode: 0440

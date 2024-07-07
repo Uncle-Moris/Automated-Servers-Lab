@@ -1,0 +1,13 @@
+[workstations]
+master
+
+[web_servers]
+node1
+node8
+
+[db_servers]
+node2
+node9
+
+[file_servers]
+node3

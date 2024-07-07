@@ -1,0 +1,40 @@
+- name: Bootstrap server for future ansible runs
+  hosts: all
+  remote_user: vagrant
+  vars:
+    # Copy public key from master node .ssh/ansible.pub
+    user_name: ansible
+    # user_passwd: ansible
+    user_pub_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHOaGWUTX7Y2hNcPuKQp831MM1zee08sf5HpPpa7a7pD ansible
+  become: true
+  pre_tasks:
+    - name: install updates (CentsOS)
+      tags: alwaye
+      ansible.builtin.dnf:
+        update_cache: yes
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+    - name: install update (Ubuntu)
+      tags: always
+      ansible.builtin.apt:
+        update_cache: yes
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
+  tasks:
+    - name: create {{ user_name }} user
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        # password: "{{ user_passwd }}"
+        shell: /bin/bash
+        group: root
+    - name: add ssh key for {{ user_name }}
+      ansible.builtin.authorized_key:
+        user: "{{ user_name }}"
+        key: "{{ user_pub_key }}"
+    - name: add souders file for {{ user_name }}
+      ansible.builtin.copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440

@@ -1,0 +1,30 @@
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: ensure docker is installed
+    apt:
+      name: docker.io
+      state: latest
+      update_cache: yes
+
+  - name: ensure docker-compose is installed
+    apt:
+      name: docker-compose
+      state: latest
+
+  - name: Added user to docker group
+    user:
+      name: vagrant
+      groups: docker
+  
+  - name: create a moris user
+    user:
+        name: moris
+        password: moris
+        groups:
+        - docker
+        state: present
+        shell: /bin/bash
+        system: no
+        createhome: yes
+        home: /home/moris
