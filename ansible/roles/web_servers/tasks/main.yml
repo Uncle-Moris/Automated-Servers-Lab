@@ -1,0 +1,22 @@
+- name: Install Nginx (Ubuntu)
+  ansible.builtin.apt:
+    name: nginx
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+- name: Install Ngnix (CentOS)
+  ansible.builtin.yum:
+    name:
+      - yum-utils
+      - nginx
+  when: ansible_distribution == "CentOS"
+- name: start and enable apache
+  tags: apache,centos,httpd
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+- name: create index.html page
+  ansible.builtin.template:
+    src: index.j2
+    dest: "{{ default_nginx_path }}index.html"
+  notify: Restart Nginx

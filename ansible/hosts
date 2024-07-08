@@ -2,12 +2,13 @@
 master
 
 [web_servers]
-node1
-node8
+node1  default_nginx_path="/var/www/html/" 
+node8  default_nginx_path="/usr/share/nginx/html/"
 
 [db_servers]
 node2
-node9
+
 
 [file_servers]
 node3
+node9
