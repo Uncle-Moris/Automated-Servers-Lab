@@ -1,1 +1,0 @@
-{"9p":{"/vagrant":{"type":"9p","disabled":false,"guestpath":"/vagrant","hostpath":"/home/moris/Projects/devops-home-lab/vagrant","__vagrantfile":true,"target":"/vagrant","accessmode":"passthrough","mount":true,"readonly":null,"mount_tag":"a32cf101eb31143cbec2a7275782832"}}}
